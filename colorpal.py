@@ -1,8 +1,11 @@
 import streamlit as st
 from PIL import Image
 import numpy as np
+import cv2
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
+from collections import Counter
+from matplotlib import colors
 
 # Function to extract dominant colors
 def extract_colors(image, num_colors=5):
