@@ -118,7 +118,7 @@ def main():
         )
 
         st.markdown(
-            '<div class="footer">Copyright 2024 (c) Devi Humaira</div>',
+            '<div class="footer">Copyright 2024 (c) devi22002 on GitHub</div>',
             unsafe_allow_html=True
         )
 
