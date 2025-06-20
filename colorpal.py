@@ -1,11 +1,7 @@
 import streamlit as st
 from PIL import Image
 import numpy as np
-import cv2
 from sklearn.cluster import KMeans
-import matplotlib.pyplot as plt
-from collections import Counter
-from matplotlib import colors
 
 # Function to extract dominant colors
 def extract_colors(image, num_colors=5):
@@ -34,7 +30,6 @@ def rgb_to_hex(rgb):
 
 # Main Streamlit app
 def main():
-    # Set page configuration
     st.set_page_config(
         page_title="Dominant Color Picker",
         page_icon="🎨",
@@ -42,7 +37,7 @@ def main():
         initial_sidebar_state="expanded",
     )
 
-    # Custom CSS for gradient background
+    # Custom CSS
     st.markdown(
          """
         <style>
@@ -76,41 +71,43 @@ def main():
     )
 
     st.markdown('<div class="header-decoration"></div>', unsafe_allow_html=True)
-    # Main content
-    st.title("Dominant Color Picker")
-    st.markdown(
-        "Upload an image to generate a color palette of the five most dominant colors."
-    )
 
+    st.title("Dominant Color Picker")
+    st.markdown("Upload an image to generate a color palette of the five most dominant colors.")
+    
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption='Uploaded Image.', use_column_width=True)
 
-        st.markdown("---")  # Horizontal separator
+        st.markdown("---")
 
         st.subheader("Color Palette")
 
         colors = extract_colors(image)
         color_patches = plot_colors(colors)
 
-        # Display each color patch in a separate box with Hex and RGB values centered below
         cols = st.columns(5)
         for i, col in enumerate(cols):
             with col:
-                st.image(color_patches[i], caption=f"Color {i+1}", width=130, use_column_width=False)
+                st.image(color_patches[i], caption="", width=100)
                 hex_value = rgb_to_hex(colors[i])
+                rgb_value = tuple(colors[i].astype(int))
+
                 st.markdown(
-                    f"<div style='display: flex; flex-direction: column; align-items: center; text-align: center;"
-                    f"            background-color: #f0f0f0; padding: 8px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);'>"
-                    f"    <p style='font-size: 14px; font-weight: bold;'>Hex: {hex_value}</p>"
-                    f"    <p style='font-size: 14px;'>RGB: {colors[i].astype(int)}</p>"
-                    f"</div>",
+                    f"""
+                    <div style='display: flex; flex-direction: column; align-items: center;
+                                background-color: #fefefe; padding: 10px; border-radius: 10px;
+                                box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1); margin-top: 10px;'>
+                        <p style='font-size: 13px; font-weight: bold; margin: 4px 0;'>Hex: {hex_value}</p>
+                        <p style='font-size: 13px; margin: 4px 0;'>RGB: {rgb_value}</p>
+                    </div>
+                    """,
                     unsafe_allow_html=True
                 )
 
-        st.markdown("---") 
+        st.markdown("---")
 
         st.subheader("About")
         st.markdown(
